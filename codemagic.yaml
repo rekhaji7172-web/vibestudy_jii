@@ -1,0 +1,27 @@
+workflows:
+  android-release:
+    name: VibeStudy Android Release
+    max_build_duration: 60
+    environment:
+      flutter: 3.10.6
+      java: 11
+    scripts:
+      - name: Get Flutter packages
+        script: flutter pub get
+      - name: Fix Android project
+        script: |
+          cd android
+          chmod +x gradlew
+          cd ..
+      - name: Build APK
+        script: |
+          flutter build apk --release --no-tree-shake-icons
+    artifacts:
+      - build/**/outputs/**/*.apk
+      - build/**/outputs/**/mapping.txt
+    publishing:
+      email:
+        recipients: []
+        notify:
+          success: true
+          failure: true
